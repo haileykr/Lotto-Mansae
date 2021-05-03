@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Lotto-Mansae/index.html/static/css/main.175129df.chunk.css",
+    "main.js": "/Lotto-Mansae/index.html/static/js/main.10da42a7.chunk.js",
+    "main.js.map": "/Lotto-Mansae/index.html/static/js/main.10da42a7.chunk.js.map",
+    "runtime-main.js": "/Lotto-Mansae/index.html/static/js/runtime-main.d3941bf7.js",
+    "runtime-main.js.map": "/Lotto-Mansae/index.html/static/js/runtime-main.d3941bf7.js.map",
+    "static/js/2.e7b10529.chunk.js": "/Lotto-Mansae/index.html/static/js/2.e7b10529.chunk.js",
+    "static/js/2.e7b10529.chunk.js.map": "/Lotto-Mansae/index.html/static/js/2.e7b10529.chunk.js.map",
+    "static/js/3.260b9433.chunk.js": "/Lotto-Mansae/index.html/static/js/3.260b9433.chunk.js",
+    "static/js/3.260b9433.chunk.js.map": "/Lotto-Mansae/index.html/static/js/3.260b9433.chunk.js.map",
+    "index.html": "/Lotto-Mansae/index.html/index.html",
+    "static/css/main.175129df.chunk.css.map": "/Lotto-Mansae/index.html/static/css/main.175129df.chunk.css.map",
+    "static/js/2.e7b10529.chunk.js.LICENSE.txt": "/Lotto-Mansae/index.html/static/js/2.e7b10529.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d3941bf7.js",
+    "static/js/2.e7b10529.chunk.js",
+    "static/css/main.175129df.chunk.css",
+    "static/js/main.10da42a7.chunk.js"
+  ]
+}
