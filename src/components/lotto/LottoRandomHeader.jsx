@@ -4,7 +4,7 @@ import LottoBoxComponent from './lotto-box/LottoBoxComponent';
 import moment from 'moment';
 import './LottoRandomHeader.css';
 
-const LottoRandomHeader = ({}) => {
+const LottoRandomHeader = () => {
     const [lottoNumber, setLottoNumber] = useState([])
     const [drwNo,setDrwNo] = useState(0);
 
@@ -34,7 +34,7 @@ const LottoRandomHeader = ({}) => {
                 setDrwNo(data.drwNo);
             }
         })
-    }, []);
+    }, [week]);
 
     return (
         <div className="lotto-random-header">
