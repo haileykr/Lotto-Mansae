@@ -1,6 +1,7 @@
 {
   "name": "lotto-mansae",
-  "homepage": "http://haileykr.github.io/lotto-mansae",
+  "homepage": "https://haileykr.github.io/lotto-mansae",
+  // "homepage": "https://lotto-mansae.netlify.app"
   "version": "0.1.0",
   "private": true,
   "dependencies": {
