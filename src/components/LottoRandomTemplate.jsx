@@ -4,7 +4,24 @@ import LottoRandomHeader from './lotto/LottoRandomHeader';
 import LottoRandomSideMenu from './lotto/LottoRandomSideMenu';
 import LottoRandomContent from './lotto/LottoRandomContent';
 
-import './LottoRandomTemplate.css'
+
+import styled from 'styled-components';
+
+
+const LottoRandomTemplateBox = styled.div`
+    margin: auto;
+    width: auto;
+    min-height: 100vh;
+`;
+
+
+const LottoRandomMain = styled.div`
+    width: auto;
+    
+    .side {
+        display: flex;
+    }
+`;
 
 class LottoRandomTemplate extends Component {
     state = {
@@ -67,11 +84,12 @@ class LottoRandomTemplate extends Component {
 
     render() {
         return (
-            <div className="lotto-random-template">
+            <LottoRandomTemplateBox>
                 <LottoRandomHeader />
 
-                <div className="lotto-random-main">
-
+                <LottoRandomMain>
+                    <h1> Random Generator (Choose at least 7 numbers!)</h1>
+                    <div className = "side">
                     <LottoRandomSideMenu
                         selected={this.state.selected}
                         handleChange={this.handleChange}
@@ -81,8 +99,10 @@ class LottoRandomTemplate extends Component {
                     <LottoRandomContent
                         lottoNumbers={this.state.lottoNumbers}
                     />
+                
                 </div>
-            </div>
+                </LottoRandomMain>
+            </LottoRandomTemplateBox>
         );
     }
 }

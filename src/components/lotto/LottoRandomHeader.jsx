@@ -2,52 +2,53 @@ import React, {useCallback, useEffect, useState} from 'react'
 import * as axios from 'axios';
 import LottoBoxComponent from './lotto-box/LottoBoxComponent';
 import moment from 'moment';
-import './LottoRandomHeader.css';
+
+import styled from 'styled-components';
+
+const LottoRandomHeaderBox = styled.div`
+    margin-top: 50px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #aeaeae;
+    display:flex;
+    flex-direction:column;
+`;
 
 const LottoRandomHeader = () => {
     const [lottoNumber, setLottoNumber] = useState([])
     const [drwNo,setDrwNo] = useState(0);
 
-    const getWeek = useCallback(() => {
-        const t1 = moment('20021207');
-        const t2 = moment();
-        const dff = moment.duration(t2.diff(t1)).asDays();
-        return Math.floor(dff/7)+1;
-    }, []);
-    const week = getWeek();
-
-
     useEffect(() => {
-        axios.get("https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo="+week).then((res) => {
+        axios.get("http://localhost:5000/lottos/last").then((res)=>{
             const data = res.data;
-            console.log(data);
+            console.log(data)
             if (data) {
                 const nums = [];
-                nums.push(data.drwNo1);
-                nums.push(data.drwNo2);
-                nums.push(data.drwNo3);
-                nums.push(data.drwNo4);
-                nums.push(data.drwNo5);
-                nums.push(data.drwNo6);
+                nums.push(data.drwtNo1);
+                nums.push(data.drwtNo2);
+                nums.push(data.drwtNo3);
+                nums.push(data.drwtNo4);
+                nums.push(data.drwtNo5);
+                nums.push(data.drwtNo6);
                 nums.push(data.bnusNo);
+                console.log(nums)
                 setLottoNumber(nums);
                 setDrwNo(data.drwNo);
             }
         })
-    }, [week]);
+    }, []);
 
     return (
-        <div className="lotto-random-header">
-            <div className="lotto-title">
+        <LottoRandomHeaderBox>
+            <h1>
                 Lotto Random Generator
-                <span>{drwNo}</span>
-            </div>
-            <div>
-                <LottoBoxComponent
-                    lottoNumber= {lottoNumber}
-                />
-            </div>
-        </div>
+            </h1>
+            <LottoBoxComponent
+                lottoNumber= {lottoNumber}
+            />
+        
+        </LottoRandomHeaderBox>
     );
 }
 

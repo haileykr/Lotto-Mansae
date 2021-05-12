@@ -17,7 +17,7 @@ class NumberPlateComponent extends Component {
                         />
                     )}
                 </div>
-                <button className ="number-button"onClick={this.props.handleButtonOnClick}> Create A Button</button>
+                <button className ="number-button"onClick={this.props.handleButtonOnClick}> Generate Numbers!</button>
             </div>
         );
     }
