@@ -18,9 +18,28 @@ const LottoRandomHeaderBox = styled.div`
 const LottoRandomHeader = () => {
     const [lottoNumber, setLottoNumber] = useState([])
     const [drwNo,setDrwNo] = useState(0);
+    const [latestWeek, setLatestWeek] = useState(-1);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/lottos/last").then((res)=>{
+
+        const getWeek = () => {
+            const t1 = new Date('December, 7, 2002');
+            const t2 = new Date();
+          
+            const dff = (t2.getTime() - t1.getTime())
+            return parseInt(dff/ (24*3600*1000*7));
+        }
+        let week = getWeek();
+
+
+
+
+
+        setLatestWeek(week);
+          
+        axios.get("https://cors-everywhere-hh.herokuapp.com/https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo="+week)
+        .then((res)=>{
+            console.log(res);
             const data = res.data;
             console.log(data)
             if (data) {
@@ -44,6 +63,9 @@ const LottoRandomHeader = () => {
             <h1>
                 Lotto Random Generator
             </h1>
+            <h2>
+                Latest Numbers - from Week {latestWeek}
+            </h2>
             <LottoBoxComponent
                 lottoNumber= {lottoNumber}
             />
