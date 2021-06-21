@@ -5,11 +5,14 @@ import LottoRandomContent from "./lotto/LottoRandomContent";
 
 import styled from "styled-components";
 
-
 const LottoRandomTemplateBox = styled.div`
   margin: auto;
   width: auto;
   min-height: 100vh;
+
+  h1 {
+      text-align:center;
+  }
 `;
 
 const LottoRandomMain = styled.div`
@@ -21,16 +24,16 @@ const LottoRandomMain = styled.div`
 `;
 
 class LottoRandomTemplate extends Component {
-
   render() {
     return (
       <LottoRandomTemplateBox>
+        <h1>Lotto for Fun!</h1>
         <LottoRandomHeader />
 
         <LottoRandomMain>
           <h1> Random Generator </h1>
           <div className="side">
-            <LottoRandomContent lottoNumbers={this.state.lottoNumbers} />
+            <LottoRandomContent />
           </div>
         </LottoRandomMain>
       </LottoRandomTemplateBox>

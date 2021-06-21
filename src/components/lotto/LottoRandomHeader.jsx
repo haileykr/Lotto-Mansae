@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useMemo, useEffect, useState} from 'react'
 import * as axios from 'axios';
 import LottoBoxComponent from './lotto-box/LottoBoxComponent';
 
@@ -11,7 +11,7 @@ const LottoRandomHeaderBox = styled.div`
     height: 100%;
     border: 1px solid #aeaeae;
     display:flex;
-    flex-direction:column;
+    flex-direction:row;
 `;
 
 const LottoRandomHeader = () => {
@@ -20,11 +20,9 @@ const LottoRandomHeader = () => {
     const [latestWeek, setLatestWeek] = useState(-1);
 
     useEffect(() => {
-
         const getWeek = () => {
             const t1 = new Date('December, 7, 2002');
             const t2 = new Date();
-          
             const dff = (t2.getTime() - t1.getTime())
             return parseInt(dff/ (24*3600*1000*7));
         }
@@ -53,13 +51,13 @@ const LottoRandomHeader = () => {
         })
     }, []);
 
+    const marginStyle = useMemo(() => ({marginRight: '1rem' }));
+
     return (
         <LottoRandomHeaderBox>
-            <h1>
-                Lotto Random Generator
-            </h1>
-            <h2>
-                Latest Numbers - from Week {latestWeek}
+            
+            <h2 style={marginStyle}>
+                Latest Numbers <br/> from Week {latestWeek}
             </h2>
             <LottoBoxComponent
                 lottoNumber= {lottoNumber}
