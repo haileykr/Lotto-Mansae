@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import * as axios from 'axios';
 import LottoBoxComponent from './lotto-box/LottoBoxComponent';
-import moment from 'moment';
 
 import styled from 'styled-components';
 
@@ -31,13 +30,9 @@ const LottoRandomHeader = () => {
         }
         let week = getWeek();
 
-
-
-
-
         setLatestWeek(week);
           
-        axios.get("https://cors-everywhere-hh.herokuapp.com/https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo="+week)
+        axios.get("http://localhost:5000/lottos/last")
         .then((res)=>{
             console.log(res);
             const data = res.data;
