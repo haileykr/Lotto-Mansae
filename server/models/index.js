@@ -11,8 +11,7 @@ const sequelize = new Sequelize(
   config
 );
 db.Number = require("./number")(sequelize,Sequelize);
-
-db.Round = require("./round")(sequelize,Sequelize);
+// db.Round = require("./round")(sequelize,Sequelize);
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

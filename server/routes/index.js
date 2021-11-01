@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const moment = require("moment");
-const { Round, Number } = require("../models");
+const { Number } = require("../models");
 const { default: axios } = require("axios");
 
 /* GET home page. */
@@ -17,7 +17,7 @@ router.get("/lottos/update", async (req, res) => {
     console.log(currentWeek);
 
     // Get the latest week info stored in the database
-    let latestStoredWeek = await Round.findOne({
+    let latestStoredWeek = await Number.findOne({
       attributes: ["round"],
       order: [["round", "DESC"]],
     });
@@ -25,30 +25,27 @@ router.get("/lottos/update", async (req, res) => {
     if (latestStoredWeek) {
       latestStoredWeek = latestStoredWeek.dataValues.round;
     } else {
+      // latestStoredWeek = 1;
       latestStoredWeek = currentWeek - 2;
     }
 
     while (latestStoredWeek < currentWeek) {
       const lottoInfo = await axios(
-        `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${currentWeek}`
+        `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${latestStoredWeek}`
       );
-      await Round.create({
-        round: currentWeek,
-        date: lottoInfo.data.drwNoDate,
-      });
-      for (let i = 1; i < 7; i++) {
-        const field = "drwtNo" + i;
-        await Number.create({
-          round: currentWeek,
-          number: lottoInfo.data[field],
-        });
-      }
       await Number.create({
-        round: currentWeek,
-        number: lottoInfo.data.bnusNo,
+        round: latestStoredWeek,
+        date: lottoInfo.data.drwNoDate,
+        number1: lottoInfo.data.drwtNo1,
+        number2: lottoInfo.data.drwtNo2,
+        number3: lottoInfo.data.drwtNo3,
+        number4: lottoInfo.data.drwtNo4,
+        number5: lottoInfo.data.drwtNo5,
+        number6: lottoInfo.data.drwtNo6,
+        numberBon: lottoInfo.data.bnusNo,
       });
 
-      currentWeek -= 1;
+      latestStoredWeek += 1;
     }
 
     return res.status(200).json("success");
@@ -59,18 +56,48 @@ router.get("/lottos/update", async (req, res) => {
 });
 
 router.get("/all", async (req, res) => {
-  const allNumbers = await Number.findAll({
-    attributes: ["number"],
-  });
-  console.log(allNumbers);
-  console.log("here");
-  res.json(allNumbers);
+  try {
+    const allNumbers = await Number.findAll({});
+    console.log(allNumbers);
+    console.log("here");
+    res.status(200).json(allNumbers);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+});
+
+router.get("/number-counts", async (req, res) => {
+  try {
+    const allNumbers = await Number.findAll({});
+    const dic = {};
+
+    for (let i = 1; i < 46; i++) {
+      dic[i] = 0;
+    }
+
+    allNumbers.forEach((round) => {
+      dic[round.number1] += 1;
+      dic[round.number2] += 1;
+      dic[round.number3] += 1;
+
+      dic[round.number4] += 1;
+      dic[round.number5] += 1;
+      dic[round.number6] += 1;
+      dic[round.numberBon] += 1;
+    });
+
+    res.status(200).json(dic);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
 });
 
 router.get("/latest", async (req, res) => {
   try {
-    const latestNums = await Number.findAll({
-      limit: 7,
+    const latestNums = await Number.findOne({
+      order: [["round", "DESC"]],
     });
     console.log(latestNums);
     res.status(200).send(latestNums);
@@ -81,19 +108,12 @@ router.get("/latest", async (req, res) => {
 });
 
 router.get("/initialize", async (req, res) => {
-  await Number.destroy({ where: {} });
-  await Round.destroy({ where: {} });
+  // await Number.destroy({ where: {} });
+  await Number.drop();
 });
 // router.get("/documents/:id", (req, res) => {
 //   res.json({ id: req.params.id });
 // });
-
-router.get("/round", async (req, res) => {
-  let latestStoredWeek = await Round.findAll({
-    order: [["round", "DESC"]],
-  });
-  res.send(latestStoredWeek);
-});
 
 const getWeek = () => {
   const t1 = moment("20021207");

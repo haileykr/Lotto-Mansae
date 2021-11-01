@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useCallback, useState } from "react";
 import * as axios from "axios";
 import LottoBoxComponent from "./lotto-box/LottoBoxComponent";
 
@@ -35,10 +35,18 @@ const LottoRandomHeader = () => {
       const data = res.data;
       console.log(data);
       if (data) {
-        const nums = data.map((numberItem) => numberItem.number);
+        const nums = [];
 
+        nums.push(data.number1);
+        nums.push(data.number2);
+        nums.push(data.number3);
+        nums.push(data.number4);
+        nums.push(data.number5);
+        nums.push(data.number6);
+
+        nums.push(data.numberBon);
         setLottoNumber(nums);
-        setDrwNo(data.drwNo);
+        setDrwNo(data.numberBon);
       }
     });
   }, []);

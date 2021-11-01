@@ -4,6 +4,7 @@ import LottoRandomHeader from "./lotto/LottoRandomHeader";
 import LottoRandomContent from "./lotto/LottoRandomContent";
 
 import styled from "styled-components";
+import LottoChart from "./lotto/LottoChart";
 
 const LottoRandomTemplateBox = styled.div`
   margin: auto;
@@ -11,7 +12,7 @@ const LottoRandomTemplateBox = styled.div`
   min-height: 100vh;
 
   h1 {
-      text-align:center;
+    text-align: center;
   }
 `;
 
@@ -32,6 +33,8 @@ class LottoRandomTemplate extends Component {
 
         <LottoRandomMain>
           <h1> Random Generator </h1>
+
+          <LottoChart />
           <div className="side">
             <LottoRandomContent />
           </div>
