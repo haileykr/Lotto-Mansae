@@ -15,28 +15,49 @@ const LottoChartContainer = styled.div`
 `;
 
 const LottoChart = () => {
+  const today = new Date().toISOString();
+
   const [lottoAll, setLottoAll] = useState(null);
+  const [fromDate, setFromDate] = useState("2002-12-07T00:00:00.000Z");
+  const [toDate, setToDate] = useState(today);
+
+  const onChangeFrom = (e) => {
+    setFromDate(`${e.target.value}T00:00:00.000Z`);
+  };
+
+  const onChangeTo = (e) => {
+    setToDate(`${e.target.value}T23:59:59.000Z`);
+  };
 
   const onClickCount = useCallback(async () => {
-    const records = await axios.get("http://localhost:5000/number-counts");
+    const range = {
+      from: fromDate,
+      to: toDate,
+    };
+    console.log(range);
+    const records = await axios.post(
+      "http://localhost:5000/number-counts",
+      range
+    );
 
-    const sorted = records.data.sort((a, b) => b - a);
+    console.log(records);
+    const sorted = records.data.sort((a, b) => b[1] - a[1]);
     console.log(records.data);
     setLottoAll(sorted);
-  }, []);
+  }, [fromDate, toDate]);
 
   let labels = [];
   let counts = [];
-
   if (lottoAll) {
-    labels = Object.keys(lottoAll);
-    counts = Object.values(lottoAll);
+    labels = lottoAll.map((i) => i[0]);
+    counts = lottoAll.map((i) => i[1]);
   }
+
   const data = {
     labels,
     datasets: [
       {
-        label: "# of Votes",
+        label: "Lotto Numbers",
         data: counts,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -61,11 +82,26 @@ const LottoChart = () => {
   const options = { scales: { yAxes: [{ ticks: { beginAtZero: true } }] } };
 
   return (
-    <LottoChartContainer>
+    <>
+      <input
+        type="date"
+        id="from"
+        name="from"
+        min="2002-12-07"
+        onChange={onChangeFrom}
+      />
+      <input
+        type="date"
+        id="to"
+        name="to"
+        min="2002-12-07"
+        onChange={onChangeTo}
+      />
       <button onClick={onClickCount}>Click! </button>
-
-      <Bar data={data} options={options} />
-    </LottoChartContainer>
+      <LottoChartContainer>
+        <Bar data={data} options={options} />
+      </LottoChartContainer>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const moment = require("moment");
 const { Number } = require("../models");
 const { default: axios } = require("axios");
+const { Op } = require("sequelize");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -44,7 +45,6 @@ router.get("/lottos/update", async (req, res) => {
         number6: lottoInfo.data.drwtNo6,
         numberBon: lottoInfo.data.bnusNo,
       });
-
       latestStoredWeek += 1;
     }
 
@@ -67,27 +67,30 @@ router.get("/all", async (req, res) => {
   }
 });
 
-router.get("/number-counts", async (req, res) => {
+router.post("/number-counts", async (req, res) => {
   try {
-    const allNumbers = await Number.findAll({});
-    const dic = {};
+    console.log(req.body);
+    const allNumbers = await Number.findAll({
+      where: { date: { [Op.between]: [req.body.from, req.body.to] } },
+    });
+    const dic = [];
 
-    for (let i = 1; i < 46; i++) {
-      dic[i] = 0;
+    for (let i = 0; i < 45; i++) {
+      dic[i] = [i + 1, 0];
     }
 
     allNumbers.forEach((round) => {
-      dic[round.number1] += 1;
-      dic[round.number2] += 1;
-      dic[round.number3] += 1;
+      dic[round.number1 - 1][1] += 1;
+      dic[round.number2 - 1][1] += 1;
+      dic[round.number3 - 1][1] += 1;
+      dic[round.number4 - 1][1] += 1;
+      dic[round.number5 - 1][1] += 1;
+      dic[round.number6 - 1][1] += 1;
 
-      dic[round.number4] += 1;
-      dic[round.number5] += 1;
-      dic[round.number6] += 1;
-      dic[round.numberBon] += 1;
+      dic[round.numberBon - 1][1] += 1;
     });
 
-    res.status(200).json(dic);
+    res.status(200).send(dic);
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
@@ -109,7 +112,8 @@ router.get("/latest", async (req, res) => {
 
 router.get("/initialize", async (req, res) => {
   // await Number.destroy({ where: {} });
-  await Number.drop();
+  // await Number.drop();
+  await Number.destroy({ where: { id: 990 } });
 });
 // router.get("/documents/:id", (req, res) => {
 //   res.json({ id: req.params.id });
