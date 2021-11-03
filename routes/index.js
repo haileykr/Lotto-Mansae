@@ -104,7 +104,7 @@ router.get("/latest", async (req, res) => {
 router.get("/initialize", async (req, res) => {
   // await Number.destroy({ where: {} });
   // await Number.drop();
-  await Number.destroy({ where: { id: 991 } });
+  await Number.destroy({ where: { id: 993 } });
 });
 
 const getWeek = () => {
