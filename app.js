@@ -26,11 +26,7 @@ db.sequelize
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
-app.use(
-  cors({
-    origin: "https://haileykr.github.io/lotto-project-front",
-  })
-);
+app.use(cors({ origin: "https://haileykr.github.io" }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
