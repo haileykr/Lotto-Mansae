@@ -28,10 +28,7 @@ app.set("view engine", "jade");
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://haileykr.github.io/lotto-project-front",
-    ],
+    origin: "https://haileykr.github.io/lotto-project-front",
   })
 );
 app.use(logger("dev"));
