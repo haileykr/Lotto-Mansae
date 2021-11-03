@@ -18,10 +18,10 @@ module.exports = {
     "dialect": "mysql"
   },
   "production": {
-    "username": "lotto-manager",
-    "password": process.env.DB_PASSWORD,
+    "username": process.env.HEROKU_DB_USERNAME,
+    "password": process.env.HEROKU_DB_PASSWORD,
     "database": "lotto_project", 
-    "host": "127.0.0.1",
+    "host": process.env.HEROKU_DB_HOST,
     "dialect": "mysql"
   }
 }
