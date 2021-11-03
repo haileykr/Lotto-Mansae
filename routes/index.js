@@ -47,7 +47,6 @@ router.get("/lottos/update", async (req, res) => {
         numberBon: lottoInfo.data.bnusNo,
       });
     }
-
     return res.status(200).json("success");
   } catch (err) {
     console.error(err);
@@ -58,8 +57,6 @@ router.get("/lottos/update", async (req, res) => {
 router.get("/all", async (req, res) => {
   try {
     const allNumbers = await Number.findAll({});
-    console.log(allNumbers);
-    console.log("here");
     res.status(200).json(allNumbers);
   } catch (e) {
     console.log(e);
@@ -69,16 +66,13 @@ router.get("/all", async (req, res) => {
 
 router.post("/number-counts", async (req, res) => {
   try {
-    console.log(req.body);
     const allNumbers = await Number.findAll({
       where: { date: { [Op.between]: [req.body.from, req.body.to] } },
     });
     const dic = [];
-
     for (let i = 0; i < 45; i++) {
       dic[i] = [i + 1, 0];
     }
-
     allNumbers.forEach((round) => {
       dic[round.number1 - 1][1] += 1;
       dic[round.number2 - 1][1] += 1;
@@ -86,10 +80,8 @@ router.post("/number-counts", async (req, res) => {
       dic[round.number4 - 1][1] += 1;
       dic[round.number5 - 1][1] += 1;
       dic[round.number6 - 1][1] += 1;
-
       dic[round.numberBon - 1][1] += 1;
     });
-
     res.status(200).send(dic);
   } catch (e) {
     console.log(e);
@@ -102,7 +94,6 @@ router.get("/latest", async (req, res) => {
     const latestNums = await Number.findOne({
       order: [["round", "DESC"]],
     });
-    console.log(latestNums);
     res.status(200).send(latestNums);
   } catch (e) {
     console.log(e);
@@ -115,9 +106,6 @@ router.get("/initialize", async (req, res) => {
   // await Number.drop();
   await Number.destroy({ where: { id: 991 } });
 });
-// router.get("/documents/:id", (req, res) => {
-//   res.json({ id: req.params.id });
-// });
 
 const getWeek = () => {
   const t1 = moment("20021207");
@@ -127,20 +115,3 @@ const getWeek = () => {
 };
 
 module.exports = router;
-
-// ORIGINAL POST
-// router.get("/lottos/last", (req, res) => {
-//   let week = getWeek();
-
-// request.get(
-//   {
-//     url:
-//       "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=" +
-//       week,
-//     strictSSL: false,
-//   },
-//   (error, response, body) => {
-//     res.json(JSON.parse(body));
-//   }
-// );
-// });
