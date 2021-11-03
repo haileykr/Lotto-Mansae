@@ -26,7 +26,7 @@ router.get("/lottos/update", async (req, res) => {
     if (latestStoredWeek) {
       latestStoredWeek = latestStoredWeek.dataValues.round;
     } else {
-      latestStoredWeek = 1;
+      latestStoredWeek = 0;
       // latestStoredWeek = currentWeek - 2;
     }
 
