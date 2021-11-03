@@ -31,6 +31,7 @@ router.get("/lottos/update", async (req, res) => {
     }
 
     while (latestStoredWeek < currentWeek) {
+      latestStoredWeek += 1;
       const lottoInfo = await axios(
         `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${latestStoredWeek}`
       );
@@ -45,7 +46,6 @@ router.get("/lottos/update", async (req, res) => {
         number6: lottoInfo.data.drwtNo6,
         numberBon: lottoInfo.data.bnusNo,
       });
-      latestStoredWeek += 1;
     }
 
     return res.status(200).json("success");
@@ -113,7 +113,7 @@ router.get("/latest", async (req, res) => {
 router.get("/initialize", async (req, res) => {
   // await Number.destroy({ where: {} });
   // await Number.drop();
-  await Number.destroy({ where: { id: 990 } });
+  await Number.destroy({ where: { id: 991 } });
 });
 // router.get("/documents/:id", (req, res) => {
 //   res.json({ id: req.params.id });
