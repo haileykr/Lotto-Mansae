@@ -26,8 +26,8 @@ router.get("/lottos/update", async (req, res) => {
     if (latestStoredWeek) {
       latestStoredWeek = latestStoredWeek.dataValues.round;
     } else {
-      // latestStoredWeek = 1;
-      latestStoredWeek = currentWeek - 2;
+      latestStoredWeek = 1;
+      // latestStoredWeek = currentWeek - 2;
     }
 
     while (latestStoredWeek < currentWeek) {
@@ -102,9 +102,9 @@ router.get("/latest", async (req, res) => {
 });
 
 router.get("/initialize", async (req, res) => {
-  // await Number.destroy({ where: {} });
+  await Number.destroy({ where: {} });
   // await Number.drop();
-  await Number.destroy({ where: { id: 993 } });
+  // await Number.destroy({ where: { id: 993 } });
 });
 
 const getWeek = () => {
