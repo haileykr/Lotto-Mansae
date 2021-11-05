@@ -4,6 +4,7 @@ const moment = require("moment");
 const { Number } = require("../models");
 const { default: axios } = require("axios");
 const { Op } = require("sequelize");
+const _ = require("lodash");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -83,6 +84,56 @@ router.post("/number-counts", async (req, res) => {
       dic[round.numberBon - 1][1] += 1;
     });
     res.status(200).send(dic);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+});
+router.get("/number-counts-stats", async (req, res) => {
+  try {
+    const allNumbers = await Number.findAll();
+    const dic = [];
+    let sorted1Month;
+    let sorted3Months;
+    let sorted1Year;
+    let sorted3Years;
+    let sorted10Years;
+    for (let i = 0; i < 45; i++) {
+      dic[i] = [i + 1, 0];
+    }
+    const len = allNumbers.length;
+    for (let i = len - 1; i >= 0; i--) {
+      const round = allNumbers[i];
+      dic[round.number1 - 1][1] += 1;
+      dic[round.number2 - 1][1] += 1;
+      dic[round.number3 - 1][1] += 1;
+      dic[round.number4 - 1][1] += 1;
+      dic[round.number5 - 1][1] += 1;
+      dic[round.number6 - 1][1] += 1;
+      dic[round.numberBon - 1][1] += 1;
+
+      if (i === len - 5) {
+        sorted1Month = _.cloneDeep(dic).sort((a, b) => b[1] - a[1]);
+      } else if (i === len - 13) {
+        sorted3Months = _.cloneDeep(dic).sort((a, b) => b[1] - a[1]);
+      } else if (i === len - 53) {
+        sorted1Year = _.cloneDeep(dic).sort((a, b) => b[1] - a[1]);
+      } else if (i === len - 157) {
+        sorted3Years = _.cloneDeep(dic).sort((a, b) => b[1] - a[1]);
+      } else if (i === len - 521) {
+        sorted10Years = _.cloneDeep(dic).sort((a, b) => b[1] - a[1]);
+      }
+    }
+    sortedAll = dic.sort((a, b) => b[1] - a[1]);
+    const result = {
+      sorted1Month,
+      sorted3Months,
+      sorted1Year,
+      sorted3Years,
+      sorted10Years,
+      sortedAll,
+    };
+    res.status(200).send(result);
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
