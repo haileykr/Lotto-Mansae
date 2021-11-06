@@ -35,7 +35,7 @@ router.get("/lottos/update", async (req, res) => {
       const lottoInfo = await axios(
         `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${latestStoredWeek}`
       );
-      if (!lottoInfo) break;
+      if (!lottoInfo.data.drwNoDate) break;
       await Number.create({
         round: latestStoredWeek,
         date: lottoInfo.data.drwNoDate,
